@@ -15,15 +15,11 @@ async def run_scrapy():
     return {"message": "Process completed successfully"}
 
 @app.get("/get_csv")
-async def get_csv(response: Response):
+async def get_csv():
     file_path = f"data/job_data.csv"
-    if os.path.exists(file_path):
-        response.headers["Content-Disposition"] = f"attachment; filename=data/job_data.csv"
-        response.headers["Content-Type"] = "text/csv"
-        with open(file_path, "r") as file:
-            return file.read()
-    else:
-        return {"error": "File not found"}
+    with open(file_path, "rb") as file:
+        file_content = file.read()
+    return Response(content=file_content, media_type="application/octet-stream", headers={"Content-Disposition": "attachment; filename=job_data.csv"})
 
 
 if __name__ == "__main__":
