@@ -7,6 +7,10 @@ import os
 
 app = FastAPI()
 
+@app.get("/")
+async def read_root():
+    return {"message": "Welcome to the LinkedIn Jobs Scraper API Service"}
+
 @app.get("/run")
 async def run_scrapy():
     page_number=0
