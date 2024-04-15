@@ -24,8 +24,6 @@ async def get_csv():
     }
     return Response(content=csv_string, status_code=200, headers=headers)
 
-def run_app():
-    uvicorn.run(app, host="0.0.0.0", port=8000)
-
 if __name__ == "__main__":
-    run_app()
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
