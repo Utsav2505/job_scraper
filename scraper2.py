@@ -1,8 +1,10 @@
 import csv
 import requests
+import time
 from bs4 import BeautifulSoup
 
 def linkedin_scraper(webpage, page_number):
+    start = time.time()
     file = open('data/job_data.csv', 'w')
     writer = csv.writer(file)
     writer.writerow(['title', 'company', 'location', 'link'])
@@ -34,6 +36,7 @@ def linkedin_scraper(webpage, page_number):
     else:
         file.close()
         print('File closed')
+    print('Time taken:', time.time()-start, 'seconds')
 # page_number=0
 # webpage='https://www.linkedin.com/jobs/search/?currentJobId=3876184250&geoId=102713980&keywords=data%20analyst&location=India&origin=JOB_SEARCH_PAGE_LOCATION_AUTOCOMPLETE&refresh=true'
 # linkedin_scraper(webpage, page_number)

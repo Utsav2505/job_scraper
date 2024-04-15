@@ -1,8 +1,9 @@
 from scraper2 import linkedin_scraper
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response, File, UploadFile, Response
 from fastapi.responses import JSONResponse
 import uvicorn
 import pandas as pd
+import os
 
 app = FastAPI()
 
@@ -14,15 +15,16 @@ async def run_scrapy():
     return {"message": "Process completed successfully"}
 
 @app.get("/get_csv")
-async def get_csv():
-    csv_file_path = "data/job_data.csv" 
-    df = pd.read_csv(csv_file_path)
-    csv_string = df.to_csv(index=False)
-    headers = {
-        "Content-Disposition": "attachment; filename=job_data.csv",
-        "Content-Type": "text/csv",
-    }
-    return Response(content=csv_string, status_code=200, headers=headers)
+async def get_csv(response: Response):
+    file_path = f"data/job_data.csv"
+    if os.path.exists(file_path):
+        response.headers["Content-Disposition"] = f"attachment; filename=data/job_data.csv"
+        response.headers["Content-Type"] = "text/csv"
+        with open(file_path, "r") as file:
+            return file.read()
+    else:
+        return {"error": "File not found"}
+
 
 if __name__ == "__main__":
     import uvicorn
